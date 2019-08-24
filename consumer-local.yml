@@ -1,6 +1,10 @@
 spring:
   application:
     name: consumer
+   rabbitmq:
+    host: 127.0.0.1
+    username: guest
+    password: guest
   mvc:
     locale: zh_CN
   http:
