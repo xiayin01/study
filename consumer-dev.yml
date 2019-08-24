@@ -11,4 +11,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-test: xiayin-dev-test-1
+test: xiayin-dev-test-2
