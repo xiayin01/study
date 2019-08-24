@@ -17,10 +17,6 @@ spring:
     encoding:
       enabled: true
       force: true
-  rabbitmq:
-    host: 127.0.0.1
-    username: guest
-    password: guest
 server:
   port: 9090
   connectionTimeout: 30000
