@@ -1,8 +1,6 @@
 spring:
   application:
     name: consumer
-  rabbitmq:
-    host: 127.0.0.1
   mvc:
     locale: zh_CN
   http:
