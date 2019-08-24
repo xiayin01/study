@@ -11,12 +11,26 @@ spring:
     name: consumer
   profiles:
     include: dev
+  mvc:
+    locale: zh_CN
+  http:
+    encoding:
+      enabled: true
+      force: true
   rabbitmq:
     host: 127.0.0.1
     username: guest
     password: guest
 server:
   port: 9090
+  connectionTimeout: 30000
+  tomcat:
+    basedir: ./tmp
+    accesslog:
+      enabled: true
+      pattern: '%t %a "%r" %s (%D ms)'
+    maxThreads: 100
+    minSpareThreads: 20
 eureka:
   client:
     serviceUrl:
