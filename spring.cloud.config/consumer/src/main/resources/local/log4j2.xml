@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status:log4j内部console日志级别,monitorInterval:自动更新配置(单位:秒) -->
+<Configuration status="error" monitorInterval="3600">
+    <Properties>
+        <Property name="baseDir">./</Property>
+    </Properties>
+    <Appenders>
+        <!-- 标准console输出 -->
+        <Console name="stdOut" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%c{1} %d{yyyy-MM-dd HH:mm:ss SSS} [%t] %T %-5p - user:%X{user_id,user_name} %m%n"/>
+        </Console>
+        <!-- layout中不要使用定位信息,影响性能,特使是异步logger -->
+        <!-- 错误日志文件,数量小采用SizeBased策略 -->
+        <RollingRandomAccessFile name="errorFile"
+                                 fileName="${baseDir}/log/error/errorLog.log"
+                                 filePattern="${baseDir}/log/error/%d{yyyy-MM}/errorLog-%d{yyyy-MM-dd}.log.zip">
+            <!-- 只记录错误日志,包括系统使用非ErrorLogger类输出的日志 -->
+            <ThresholdFilter level="warn" onMatch="ACCEPT"
+                             onMismatch="DENY"/>
+            <!-- 每天一个日志文件,防止基于大小策略的删除旧的日志 -->
+            <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            <JSONLayout compact="true" eventEol="true" properties="true"/>
+        </RollingRandomAccessFile>
+        <!-- 业务日志文件,数量大,采用timeBased策略 -->
+        <RollingRandomAccessFile name="appFile"
+                                 fileName="${baseDir}/log/app/appLog.log"
+                                 filePattern="${baseDir}/log/app/%d{yyyy-MM}/appLog-%d{yyyy-MM-dd-HH}.log.zip">
+            <!-- 6小时一个日志文件 -->
+            <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+            <PatternLayout
+                    pattern="%c{1} %d{yyyy-MM-dd HH:mm:ss SSS} [%t] %T %-5p - %m%n"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="stdOut"/>
+            <AppenderRef ref="errorFile"/>
+        </Root>
+        <!-- 错误日志,子logger不追加root日志内容 -->
+        <AsyncLogger name="errorLogger" level="error" additivity="false">
+            <AppenderRef ref="errorFile"/>
+        </AsyncLogger>
+        <!-- 业务日志 -->
+        <AsyncLogger name="appLogger" level="info" additivity="false">
+            <AppenderRef ref="appFile"/>
+        </AsyncLogger>
+        <Logger
+                name="org.springframework.aop.interceptor.PerformanceMonitorInterceptor"
+                level="trace" additivity="false">
+            <AppenderRef ref="stdOut"/>
+        </Logger>
+    </Loggers>
+</Configuration>
