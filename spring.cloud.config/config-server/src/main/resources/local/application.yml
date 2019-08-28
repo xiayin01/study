@@ -13,7 +13,7 @@ spring:
         git:
           uri: https://github.com/xiayin01/config
 server:
-  port: 8888
+  port: 8889
   connectionTimeout: 30000
   tomcat:
     basedir: ./tmp
