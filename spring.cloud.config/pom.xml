@@ -174,9 +174,9 @@
 
     <distributionManagement>
         <repository>
-            <id>alimaven</id>
-            <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <id>nexus-releases</id>
+            <name>releases</name>
+            <url>http://39.104.97.83:8081/home/repository/maven-public/</url>
         </repository>
     </distributionManagement>
 
