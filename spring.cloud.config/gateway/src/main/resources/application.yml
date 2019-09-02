@@ -9,6 +9,8 @@ management:
 server:
   port: 8888
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: gateway
   cloud:
@@ -24,6 +26,16 @@ spring:
               args:
                 name: fallback
                 fallbackUri: forward:/fallback
+        - id: auth_route
+          uri: lb://auth-server
+          predicates:
+            - Path=/auth-server/**
+            - name: Hystrix
+                args:
+                  name: fallback
+                  fallbackUri: forward:/fallback
+          filters:
+            - StripPrefix=1
         - id: requestratelimiter_route
           uri: lb://test
           predicates:
@@ -46,9 +58,25 @@ spring:
           lower-case-service-id: true
   redis:
     host: 39.104.97.83
-hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 4000
-logging:
-  level:
-    com.kedi.gateway: debug
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 4000
+security:
+  oauth2:
+    client:
+      client-id: webapp
+      access-token-uri: http://localhost:8888/auth-server/oauth/token
+      user-authorization-uri: http://localhost:8888/auth-server/oauth/authorize
+    resource:
+      user-info-uri: http://localhost:8888/auth-server/user
+      prefer-token-info: false
+logging.level:
+  org.springframework.security: DEBUG
+  org.springframework.gateway: DEBUG
+
 
 

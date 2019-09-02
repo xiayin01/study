@@ -1,0 +1,22 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  application:
+    name: user
+server:
+  port: 3333
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+security:
+  oauth2:
+    resource:
+      id: user
+      user-info-uri: http://localhost:2222/auth-server/user
+      prefer-token-info: false
