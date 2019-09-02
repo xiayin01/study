@@ -172,18 +172,13 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-    <repository>
-        <id>internal repository</id>
-        <name>Local repository</name>
-        <url>http://39.104.97.83:8081/repository/maven-public/</url>
-        <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-            <checksumPolicy>warn</checksumPolicy>
-        </snapshots>
-    </repository>
-</repositories>
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>releases</name>
+            <url>http://39.104.97.83:8081/repository/maven-public/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <resources>
