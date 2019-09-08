@@ -1,11 +1,12 @@
-package com.kedi.user.config;
+package com.kedi.common.configuration;
 
 import com.kedi.common.redis.RedisLock;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * TODO
+ * redis配置类
  *
  * @author xy
  */
@@ -13,7 +14,9 @@ import org.springframework.context.annotation.Configuration;
 public class RedisConfig {
 
     @Bean
-    public RedisLock redisLock(){
+    @ConditionalOnMissingBean(RedisLock.class)
+    public RedisLock testRedisLock() {
         return new RedisLock();
     }
+
 }

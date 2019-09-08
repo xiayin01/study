@@ -127,6 +127,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <exclusions>
@@ -180,6 +185,7 @@
         </repository>
     </distributionManagement>
 
+    <!--全局打包时，注销<build>..</build>-->
     <build>
         <resources>
             <resource>

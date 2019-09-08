@@ -3,6 +3,8 @@ package com.kedi.common.redis;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -13,11 +15,11 @@ import java.util.Objects;
  *
  * @author xy
  */
-public class RedisLock  {
+public class RedisLock implements InitializingBean, DisposableBean {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisLock.class);
 
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
     /**
      * 重试时间
      */
@@ -38,10 +40,15 @@ public class RedisLock  {
     public RedisLock() {
     }
 
-    public RedisLock(RedisTemplate<String, Object> redisTemplate, long expireMsecs, boolean locked) {
+    /**
+     * 构造器
+     *
+     * @param redisTemplate redisTemplate
+     * @param expireMsecs   过期时间
+     */
+    public RedisLock(RedisTemplate<String, String> redisTemplate, long expireMsecs) {
         this.redisTemplate = redisTemplate;
         this.expireMsecs = expireMsecs;
-        this.locked = locked;
     }
 
     /**
@@ -76,7 +83,7 @@ public class RedisLock  {
      * @return 对应的结果
      */
     private String get(final String key) {
-        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         return Objects.nonNull(valueOperations) ? valueOperations.get(key).toString() : null;
     }
 
@@ -99,8 +106,8 @@ public class RedisLock  {
      * @return 结果
      */
     private String getSet(final String key, final String value) {
-        Object obj = redisTemplate.opsForValue().getAndSet(key, value);
-        return Objects.nonNull(obj) ? (String) obj : null;
+        String obj = redisTemplate.opsForValue().getAndSet(key, value);
+        return Objects.nonNull(obj) ? obj : null;
     }
 
     /**
@@ -148,7 +155,7 @@ public class RedisLock  {
     }
 
     /**
-     * 释放获取到的锁
+     * 释放获取到的锁(单机redis使用synchronized)
      */
     public synchronized void unlock(final String lockKey) {
         if (locked) {
@@ -157,4 +164,13 @@ public class RedisLock  {
         }
     }
 
+    @Override
+    public void destroy() throws Exception {
+
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+    }
 }
