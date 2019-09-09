@@ -1,7 +1,7 @@
 package com.kedi.common.util.sql;
 
 import com.kedi.common.web.PageBean;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -22,6 +22,8 @@ public class SQL {
     private final List<String[]> set = new ArrayList<>();
     private final List<String[]> duplicateUpdate = new ArrayList<>();
     private String insert;
+    private String insertIgnore;
+    private String replaceInto;
     private String update;
     private String delete;
     private int[] limit;
@@ -32,13 +34,13 @@ public class SQL {
         switch (actionType) {
             case SELECT: {
                 if (select.size() > 0) {
-                    sql.append("SELECT ").append(StringUtils.join(select, ","));
+                    sql.append("SELECT ").append(org.apache.commons.lang.StringUtils.join(select, ","));
                 }
                 break;
             }
             case FROM: {
                 if (from.size() > 0) {
-                    sql.append("FROM ").append(StringUtils.join(from, ","));
+                    sql.append("FROM ").append(org.apache.commons.lang.StringUtils.join(from, ","));
                 }
                 break;
             }
@@ -55,31 +57,31 @@ public class SQL {
                             joinSqls.add("INNER JOIN " + joinSql.getSql());
                         }
                     }
-                    sql.append(StringUtils.join(joinSqls, " "));
+                    sql.append(org.apache.commons.lang.StringUtils.join(joinSqls, " "));
                 }
                 break;
             }
             case WHERE: {
                 if (where.size() > 0) {
-                    sql.append("WHERE ").append(StringUtils.join(where, " AND "));
+                    sql.append("WHERE ").append(org.apache.commons.lang.StringUtils.join(where, " AND "));
                 }
                 break;
             }
             case GROUP_BY: {
                 if (groupBy.size() > 0) {
-                    sql.append("GROUP BY ").append(StringUtils.join(groupBy, ","));
+                    sql.append("GROUP BY ").append(org.apache.commons.lang.StringUtils.join(groupBy, ","));
                 }
                 break;
             }
             case HAVING: {
                 if (having.size() > 0) {
-                    sql.append("HAVING ").append(StringUtils.join(having, " AND "));
+                    sql.append("HAVING ").append(org.apache.commons.lang.StringUtils.join(having, " AND "));
                 }
                 break;
             }
             case ORDER_BY: {
                 if (orderBy.size() > 0) {
-                    sql.append("ORDER BY ").append(StringUtils.join(orderBy, ","));
+                    sql.append("ORDER BY ").append(org.apache.commons.lang.StringUtils.join(orderBy, ","));
                 }
                 break;
             }
@@ -90,10 +92,20 @@ public class SQL {
                 break;
             }
             case INSERT: {
-                if (StringUtils.isNotBlank(insert)) {
+                if (org.apache.commons.lang.StringUtils.isNotBlank(insert)) {
                     sql.append("INSERT INTO ").append(insert);
                 }
                 break;
+            }
+            case INSERT_IGNORE: {
+                if (org.apache.commons.lang.StringUtils.isNotBlank(insertIgnore)) {
+                    sql.append("INSERT IGNORE INTO").append(insertIgnore);
+                }
+            }
+            case REPLACE_INTO: {
+                if (org.apache.commons.lang.StringUtils.isNotBlank(replaceInto)) {
+                    sql.append("REPLACE INTO").append(replaceInto);
+                }
             }
             case VALUES: {
                 if (values.size() > 0) {
@@ -104,8 +116,8 @@ public class SQL {
                         columnArr[i] = value[0];
                         valueArr[i] = value[1];
                     }
-                    sql.append(String.format("(%s) VALUES (%s)", StringUtils.join(columnArr, ","),
-                            StringUtils.join(valueArr, ",")));
+                    sql.append(String.format("(%s) VALUES (%s)", org.apache.commons.lang.StringUtils.join(columnArr, ","),
+                            org.apache.commons.lang.StringUtils.join(valueArr, ",")));
                 }
                 break;
             }
@@ -116,12 +128,12 @@ public class SQL {
                         String[] duplicateUpdateTmp = duplicateUpdate.get(i);
                         duplicateUpdateArr[i] = duplicateUpdateTmp[0] + "=" + duplicateUpdateTmp[1];
                     }
-                    sql.append("ON DUPLICATE KEY UPDATE ").append(StringUtils.join(duplicateUpdateArr, ","));
+                    sql.append("ON DUPLICATE KEY UPDATE ").append(org.apache.commons.lang.StringUtils.join(duplicateUpdateArr, ","));
                 }
                 break;
             }
             case UPDATE: {
-                if (StringUtils.isNotBlank(update)) {
+                if (org.apache.commons.lang.StringUtils.isNotBlank(update)) {
                     sql.append("UPDATE ").append(update);
                 }
                 break;
@@ -133,12 +145,12 @@ public class SQL {
                         String[] setTmp = set.get(i);
                         setArr[i] = setTmp[0] + "=" + setTmp[1];
                     }
-                    sql.append("SET ").append(StringUtils.join(setArr, ","));
+                    sql.append("SET ").append(org.apache.commons.lang.StringUtils.join(setArr, ","));
                 }
                 break;
             }
             case DELETE: {
-                if (StringUtils.isNotBlank(delete)) {
+                if (org.apache.commons.lang.StringUtils.isNotBlank(delete)) {
                     sql.append("DELETE FROM ").append(delete);
                 }
                 break;
@@ -150,7 +162,7 @@ public class SQL {
     }
 
     public SQL select(String select) {
-        if (StringUtils.isNotBlank(select)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(select)) {
             this.select.add(select);
         }
         return this;
@@ -170,7 +182,7 @@ public class SQL {
     }
 
     public SQL from(String table) {
-        if (StringUtils.isNotBlank(table)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(table)) {
             this.from.add(table);
         }
         return this;
@@ -194,18 +206,18 @@ public class SQL {
     }
 
     public SQL leftJoin(String leftJoin) {
-        if (StringUtils.isNotBlank(leftJoin)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(leftJoin)) {
             this.join.add(new JoinSql(ActionType.LEFT_JOIN, leftJoin));
         }
         return this;
     }
 
     public SQL leftJoin(String leftJoin, String... ands) {
-        if (StringUtils.isNotBlank(leftJoin)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(leftJoin)) {
             StringBuilder sb = new StringBuilder(leftJoin);
             if (ands != null && ands.length > 0) {
                 for (String and : ands) {
-                    if (StringUtils.isNotBlank(and)) {
+                    if (org.apache.commons.lang.StringUtils.isNotBlank(and)) {
                         sb.append(" AND ").append(and);
                     }
                 }
@@ -233,18 +245,18 @@ public class SQL {
     }
 
     public SQL innerJoin(String innerJoin) {
-        if (StringUtils.isNotBlank(innerJoin)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(innerJoin)) {
             this.join.add(new JoinSql(ActionType.INNER_JOIN, innerJoin));
         }
         return this;
     }
 
     public SQL innerJoin(String innerJoin, String... ands) {
-        if (StringUtils.isNotBlank(innerJoin)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(innerJoin)) {
             StringBuilder sb = new StringBuilder(innerJoin);
             if (ands != null && ands.length > 0) {
                 for (String and : ands) {
-                    if (StringUtils.isNotBlank(and)) {
+                    if (org.apache.commons.lang.StringUtils.isNotBlank(and)) {
                         sb.append(" AND ").append(and);
                     }
                 }
@@ -272,14 +284,14 @@ public class SQL {
     }
 
     public SQL where(String where) {
-        if (StringUtils.isNotBlank(where)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(where)) {
             this.where.add(where);
         }
         return this;
     }
 
     public SQL and(String where) {
-        if (StringUtils.isNotBlank(where)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(where)) {
             where(where);
         }
         return this;
@@ -312,7 +324,7 @@ public class SQL {
     }
 
     public SQL groupBy(String groupBy) {
-        if (StringUtils.isNotBlank(groupBy)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(groupBy)) {
             this.groupBy.add(groupBy);
         }
         return this;
@@ -332,7 +344,7 @@ public class SQL {
     }
 
     public SQL having(String having) {
-        if (StringUtils.isNotBlank(having)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(having)) {
             this.having.add(having);
         }
         return this;
@@ -352,7 +364,7 @@ public class SQL {
     }
 
     public SQL orderBy(String orderBy) {
-        if (StringUtils.isNotBlank(orderBy)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(orderBy)) {
             this.orderBy.add(orderBy);
         }
         return this;
@@ -415,7 +427,7 @@ public class SQL {
     }
 
     public SQL insert(String table) {
-        if (StringUtils.isNotBlank(table)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(table)) {
             this.insert = table;
         }
         return this;
@@ -434,8 +446,48 @@ public class SQL {
         return insert(condition, insert);
     }
 
+    public SQL insertIgnore(String table) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(table)) {
+            this.insertIgnore = table;
+        }
+        return this;
+    }
+
+    public SQL insertIgnore(boolean condition, String insertIgnore) {
+        if (condition) {
+            insertIgnore(insertIgnore);
+        }
+        return this;
+    }
+
+    public SQL insertIgnore(SqlAssert insertIgnoreAssert) {
+        boolean condition = insertIgnoreAssert.check();
+        String insertIgnore = insertIgnoreAssert.create();
+        return insertIgnore(condition, insertIgnore);
+    }
+
+    public SQL replaceInto(String table) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(table)) {
+            this.replaceInto = table;
+        }
+        return this;
+    }
+
+    public SQL replaceInto(boolean condition, String replaceInto) {
+        if (condition) {
+            replaceInto(replaceInto);
+        }
+        return this;
+    }
+
+    public SQL replaceInto(SqlAssert replaceIntoAssert) {
+        boolean condition = replaceIntoAssert.check();
+        String replaceInto = replaceIntoAssert.create();
+        return replaceInto(condition, replaceInto);
+    }
+
     public SQL values(String column, String value) {
-        if (StringUtils.isNotBlank(column) && StringUtils.isNotBlank(value)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(column) && org.apache.commons.lang.StringUtils.isNotBlank(value)) {
             this.values.add(new String[]{column, value});
         }
         return this;
@@ -462,7 +514,7 @@ public class SQL {
     }
 
     public SQL duplicateUpdate(String column, String value) {
-        if (StringUtils.isNotBlank(column) && StringUtils.isNotBlank(value)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(column) && org.apache.commons.lang.StringUtils.isNotBlank(value)) {
             this.duplicateUpdate.add(new String[]{column, value});
         }
         return this;
@@ -476,7 +528,7 @@ public class SQL {
     }
 
     public SQL update(String table) {
-        if (StringUtils.isNotBlank(table)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(table)) {
             this.update = table;
         }
         return this;
@@ -496,7 +548,7 @@ public class SQL {
     }
 
     public SQL set(String column, String value) {
-        if (StringUtils.isNotBlank(column) && StringUtils.isNotBlank(value)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(column) && org.apache.commons.lang.StringUtils.isNotBlank(value)) {
             this.set.add(new String[]{column, value});
         }
         return this;
@@ -523,7 +575,7 @@ public class SQL {
     }
 
     public SQL delete(String table) {
-        if (StringUtils.isNotBlank(table)) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(table)) {
             this.delete = table;
         }
         return this;
@@ -562,15 +614,15 @@ public class SQL {
         for (ActionType actionType : actionTypes) {
             sqls.add(createSql(actionType));
         }
-        sqls.removeIf(StringUtils::isBlank);
-        return StringUtils.join(sqls, " ");
+        sqls.removeIf(org.apache.commons.lang.StringUtils::isBlank);
+        return org.apache.commons.lang.StringUtils.join(sqls, " ");
     }
 
     /**
      * 关键字枚举
      */
     enum ActionType {
-        SELECT, INSERT, VALUES, DUPLICATE_UPDATE, UPDATE, DELETE, FROM, LEFT_JOIN, INNER_JOIN, JOIN, SET, WHERE, GROUP_BY, HAVING, ORDER_BY, LIMIT
+        SELECT, INSERT, INSERT_IGNORE, REPLACE_INTO, VALUES, DUPLICATE_UPDATE, UPDATE, DELETE, FROM, LEFT_JOIN, INNER_JOIN, JOIN, SET, WHERE, GROUP_BY, HAVING, ORDER_BY, LIMIT
     }
 
     private class JoinSql {
@@ -599,7 +651,7 @@ public class SQL {
             SQL sql = sqlIterator.iterate(param, i);
             sqls[i] = sql.build();
         }
-        return StringUtils.join(sqls, ITERATOR_SEPARATOR);
+        return org.apache.commons.lang.StringUtils.join(sqls, ITERATOR_SEPARATOR);
     }
 
     public <T> String foreach(T[] params, SqlIterator<T> sqlIterator) {
@@ -610,7 +662,7 @@ public class SQL {
             SQL sql = sqlIterator.iterate(param, i);
             sqls[i] = sql.build();
         }
-        return StringUtils.join(sqls, ITERATOR_SEPARATOR);
+        return org.apache.commons.lang.StringUtils.join(sqls, ITERATOR_SEPARATOR);
     }
 
     public <T> String foreach(List<T> params, ValuesIterator<T> valuesIterator) {
@@ -624,7 +676,7 @@ public class SQL {
         StringBuilder sql = new StringBuilder();
         return sql.append(build()).append("(").append(name).append(")")
                 .append(" VALUES ")
-                .append(StringUtils.join(values, ",")).toString();
+                .append(org.apache.commons.lang.StringUtils.join(values, ",")).toString();
     }
 
     public <T> String foreach(T[] params, ValuesIterator<T> valuesIterator) {
