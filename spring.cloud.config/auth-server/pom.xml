@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <start-class>com.kedi.auth.AuthServerApp</start-class>
+        <start-class>com.xy.auth.AuthServerApp</start-class>
     </properties>
 
     <dependencies>

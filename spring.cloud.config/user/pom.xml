@@ -12,7 +12,7 @@
     <artifactId>user</artifactId>
 
     <properties>
-        <start-class>com.kedi.user.UserApp</start-class>
+        <start-class>com.xy.user.UserApp</start-class>
     </properties>
 
     <dependencies>
@@ -64,6 +64,11 @@
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
+        </dependency>
+        <!--消息mq-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
     </dependencies>
 

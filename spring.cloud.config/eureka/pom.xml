@@ -16,7 +16,7 @@
     <name>eureka</name>
 
     <properties>
-        <start-class>com.kedi.eureka.EurekaApp</start-class>
+        <start-class>com.xy.eureka.EurekaApp</start-class>
     </properties>
 
     <dependencies>

@@ -14,7 +14,7 @@
     <artifactId>test</artifactId>
 
     <properties>
-        <start-class>com.kedi.test.App</start-class>
+        <start-class>com.xy.test.App</start-class>
     </properties>
 
     <dependencies>

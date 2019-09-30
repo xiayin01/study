@@ -16,7 +16,7 @@
     <name>consumer</name>
 
     <properties>
-        <start-class>com.kedi.config.consumer.ConsumerApp</start-class>
+        <start-class>com.xy.config.consumer.ConsumerApp</start-class>
     </properties>
 
     <dependencies>

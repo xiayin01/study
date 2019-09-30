@@ -6,6 +6,15 @@ management:
 spring:
   application:
     name: user
+  rabbitmq:
+    host: 39.104.97.83
+    port: 5672
+    username: admin
+    password: 5555
+    listener:
+      simple:
+        #人为地获取到channel之后调用方法向server发送ack（或消费失败时的nack）信息
+        acknowledge-mode: manual
 server:
   port: 3333
 eureka:

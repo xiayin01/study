@@ -16,7 +16,7 @@
     <name>config-server</name>
 
     <properties>
-        <start-class>com.kedi.config.server.ConfigServerApp</start-class>
+        <start-class>com.xy.config.server.ConfigServerApp</start-class>
     </properties>
 
     <dependencies>
