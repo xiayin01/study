@@ -59,7 +59,7 @@ public class DataBaseConfiguration {
      * 注入一个sqlSessionFactory
      */
     @Bean(value = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory(HikariDataSource dataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(hikariDataSource());
         return sqlSessionFactoryBean.getObject();

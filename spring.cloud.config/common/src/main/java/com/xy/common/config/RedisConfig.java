@@ -1,4 +1,4 @@
-package com.xy.common.configuration;
+package com.xy.common.config;
 
 import com.xy.common.redis.RedisLock;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

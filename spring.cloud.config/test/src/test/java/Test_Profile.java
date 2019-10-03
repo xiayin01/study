@@ -1,4 +1,5 @@
 import com.xy.test.config.ProfileConfig;
+import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -18,7 +19,7 @@ public class Test_Profile {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void test1() {
         //1.创建applicationContext对象
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
