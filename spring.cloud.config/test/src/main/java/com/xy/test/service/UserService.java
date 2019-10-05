@@ -24,4 +24,5 @@ public class UserService {
         userMapper.insert(name);
         System.out.println("执行成功");
     }
+
 }
