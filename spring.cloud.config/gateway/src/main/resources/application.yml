@@ -12,7 +12,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: gateway
+    name: gateway-server
   cloud:
     gateway:
       routes:
@@ -30,12 +30,12 @@ spring:
           uri: lb://auth-server
           predicates:
             - Path=/auth-server/**
-            - name: Hystrix
-                args:
-                  name: fallback
-                  fallbackUri: forward:/fallback
           filters:
             - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: fallback
+                fallbackUri: forward:/fallback
         - id: requestratelimiter_route
           uri: lb://test
           predicates:
