@@ -1,36 +1,29 @@
 package com.xy.test.service;
 
-import com.xy.test.entity.User;
-import com.xy.test.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
-
 /**
- * 用户测试
+ * 接口
  *
  * @author xy
  */
-@Service
-public class UserService {
+public interface UserService {
 
-    @Autowired
-    private UserMapper userMapper;
+    /**
+     * 新增
+     */
+    void insert();
 
-    @Transactional(rollbackFor = Exception.class)
-    public void insert() {
-        String name = UUID.randomUUID().toString().substring(0, 5);
-        userMapper.insert(name);
-        System.out.println("执行成功");
-    }
+    /**
+     * hello
+     *
+     * @param name 名字
+     */
+    void sayHello(String name);
 
-    public User getUser() {
-        User user = new User();
-        user.setId(1);
-        user.setName("xy");
-        return user;
-    }
+    /**
+     * 拜拜
+     *
+     * @param name 名字
+     */
+    void sayByeBye(String name);
 
 }
