@@ -4,11 +4,11 @@ import com.xy.test.spring.boot.servlet.MySpringBootFilter;
 import com.xy.test.spring.boot.servlet.MySpringBootServlet;
 import com.xy.test.spring.boot.servlet.MySpringBootServletRequestListener;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
@@ -20,7 +20,7 @@ import javax.servlet.Servlet;
  *
  * @author xy
  */
-@SpringBootApplication
+@SpringCloudApplication
 @EnableDiscoveryClient
 @ServletComponentScan(basePackages = {"com.xy.test.servlet"})
 public class App {
