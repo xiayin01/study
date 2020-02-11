@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -13,8 +15,17 @@ public class Test {
         String a="a";
         String b="a";
         String c=new String("a");
-        System.out.println(a==b);
-        System.out.println(a==c);
+        System.out.println(a.equals(b));
+        System.out.println(a.equals(c));
 
+        List<Long> aList=new ArrayList<>();
+        aList.add(1L);
+        aList.add(2L);
+        List<Long> bList=new ArrayList<>();
+        bList.add(2L);
+        bList.add(3L);
+        bList.add(4L);
+        bList.removeIf(bb->aList.stream().anyMatch(aa->aa.equals(bb)));
+        bList.forEach(bb-> System.out.println(bb));
     }
 }

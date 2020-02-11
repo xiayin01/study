@@ -9,7 +9,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cloud.client.SpringCloudApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
 import javax.servlet.DispatcherType;
@@ -21,7 +20,6 @@ import javax.servlet.Servlet;
  * @author xy
  */
 @SpringCloudApplication
-@EnableDiscoveryClient
 @ServletComponentScan(basePackages = {"com.xy.test.servlet"})
 public class App {
 

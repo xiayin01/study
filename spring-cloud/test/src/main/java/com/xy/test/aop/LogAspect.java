@@ -21,7 +21,7 @@ public class LogAspect {
      * 切入方法
      */
     @Pointcut("execution(* com.xy.test.business.MathCalculator.*(..))")
-    public void pointCut() {
+    private void pointCut() {
 
     }
 
