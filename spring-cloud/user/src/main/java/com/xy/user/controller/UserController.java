@@ -3,6 +3,9 @@ package com.xy.user.controller;
 import com.xy.common.redis.RedisLock;
 import com.xy.common.user.UserInfo;
 import com.xy.common.web.ResponseBody;
+import com.xy.user.dto.UserDto;
+import com.xy.user.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("user")
+@AllArgsConstructor
 public class UserController {
 
     @Autowired
@@ -25,6 +29,7 @@ public class UserController {
     private RedisTemplate redisTemplate;
     @Autowired
     private RedisLock redisLock;
+    private final UserService userService;
 
     /**
      * 获取用户信息
@@ -38,5 +43,10 @@ public class UserController {
         userInfo.setUserId(1L);
         userInfo.setUserName(userName);
         return ResponseBody.success(userInfo);
+    }
+
+    @GetMapping("user")
+    public UserDto getUser(Long id) {
+        return userService.getUser(id);
     }
 }
