@@ -18,6 +18,13 @@ public class DynamicProxyUserServiceInvocationHandler implements InvocationHandl
         this.target = target;
     }
 
+    /**
+     * @param proxy  该方法对象所在的类对象实例
+     * @param method 方法对象
+     * @param args   方法参数
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         return method.invoke(target, args);

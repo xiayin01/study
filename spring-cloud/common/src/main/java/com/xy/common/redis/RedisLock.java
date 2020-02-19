@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import java.util.Objects;
 
 /**
- * redis分布式锁
+ * redis分布式锁（单机）
  *
  * @author xy
  */
@@ -17,7 +17,7 @@ public class RedisLock {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisLock.class);
 
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     /**
      * 重试时间
      */
@@ -44,7 +44,7 @@ public class RedisLock {
      * @param redisTemplate redisTemplate
      * @param expireMsecs   过期时间
      */
-    public RedisLock(RedisTemplate<String, String> redisTemplate, long expireMsecs) {
+    public RedisLock(RedisTemplate<String, Object> redisTemplate, long expireMsecs) {
         this.redisTemplate = redisTemplate;
         this.expireMsecs = expireMsecs;
     }
@@ -81,7 +81,7 @@ public class RedisLock {
      * @return 对应的结果
      */
     private String get(final String key) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
         return Objects.nonNull(valueOperations) ? valueOperations.get(key).toString() : null;
     }
 
@@ -104,7 +104,7 @@ public class RedisLock {
      * @return 结果
      */
     private String getSet(final String key, final String value) {
-        String obj = redisTemplate.opsForValue().getAndSet(key, value);
+        String obj = redisTemplate.opsForValue().getAndSet(key, value).toString();
         return Objects.nonNull(obj) ? obj : null;
     }
 
