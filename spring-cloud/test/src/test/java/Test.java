@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,6 +27,6 @@ public class Test {
         bList.add(3L);
         bList.add(4L);
         bList.removeIf(bb->aList.stream().anyMatch(aa->aa.equals(bb)));
-        bList.forEach(bb-> System.out.println(bb));
+        bList.forEach(System.out::println);
     }
 }
