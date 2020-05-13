@@ -1,3 +1,5 @@
+package com.xy.test;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.runner.RunWith;
