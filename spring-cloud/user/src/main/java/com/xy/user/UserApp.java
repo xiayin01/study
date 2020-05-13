@@ -2,6 +2,7 @@ package com.xy.user;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -15,6 +16,7 @@ import org.springframework.core.SpringVersion;
 @SpringCloudApplication
 @EnableFeignClients
 @EnableAspectJAutoProxy
+@EnableCaching
 public class UserApp {
 
     public static void main(String[] args) {

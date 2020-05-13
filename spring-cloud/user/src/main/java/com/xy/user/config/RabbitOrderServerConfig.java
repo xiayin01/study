@@ -6,6 +6,7 @@ import org.springframework.amqp.core.CustomExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class RabbitOrderServerConfig {
      * 延时队列交换机
      * 注意这里的交换机类型：CustomExchange
      *
-     * @return
+     * @return CustomExchange
      */
     @Bean
     public CustomExchange delayExchange() {
@@ -34,17 +35,23 @@ public class RabbitOrderServerConfig {
     /**
      * 延时队列
      *
-     * @return
+     * @return Queue
      */
-    @Bean
+    @Bean("order_server_queue")
+    @Primary
     public Queue delayQueue() {
         return new Queue("order_server_queue", true);
+    }
+
+    @Bean("test_queue")
+    public Queue delayTestQueue() {
+        return new Queue("test_queue", true);
     }
 
     /**
      * 给延时队列绑定交换机
      *
-     * @return
+     * @return Binding
      */
     @Bean
     public Binding groupBuyDelayBinding(Queue cfgDelayQueue, CustomExchange cfgUserDelayExchange) {

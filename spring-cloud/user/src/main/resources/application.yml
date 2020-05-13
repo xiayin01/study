@@ -8,6 +8,11 @@ spring:
     name: user
   profiles:
     include: local
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # 指定数据源
+    database: 1
   rabbitmq:
     host: 127.0.0.1
     port: 5672
