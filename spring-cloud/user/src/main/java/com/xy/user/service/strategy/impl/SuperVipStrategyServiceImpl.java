@@ -1,12 +1,17 @@
 package com.xy.user.service.strategy.impl;
 
 import com.xy.user.enums.UserTypeEnum;
+import com.xy.user.factory.user.UserStrategyFactory;
 import com.xy.user.service.strategy.UserStrategyService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class SuperVipStrategyServiceImpl implements UserStrategyService, InitializingBean {
+
+    private final UserStrategyFactory userStrategyFactory;
 
     @Override
     public void strategy() {
@@ -15,6 +20,6 @@ public class SuperVipStrategyServiceImpl implements UserStrategyService, Initial
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        UserStrategyFactory.registerUserStrategy(UserTypeEnum.VIP.getText(), this);
+        userStrategyFactory.addStrategy(UserTypeEnum.SUPER_VIP.getValue(), this);
     }
 }
