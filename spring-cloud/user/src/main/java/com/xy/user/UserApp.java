@@ -1,9 +1,11 @@
 package com.xy.user;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.Banner;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.SpringVersion;
 
 /**
  * 用户启动类
@@ -16,6 +18,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class UserApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(UserApp.class, args);
+        new SpringApplicationBuilder(UserApp.class)
+                .main(SpringVersion.class) // 这个是为了可以加载 Spring 版本
+                .bannerMode(Banner.Mode.CONSOLE)// 控制台打印
+                .run(args);
     }
 }
