@@ -30,6 +30,10 @@ server:
 eureka:
   instance:
     hostname: localhost
+    # 租约续订间隔时间（默认30秒），如下所示每间隔 5s 向服务端发送一次心跳，证明自己依然"存活"
+    lease-renewal-interval-in-seconds: 5
+    # 租约到期时间（默认90秒），如下所示，告诉服务端如果我 10s 之内没有给你发心跳，就代表我"死"了，将我踢出掉
+    lease-expiration-duration-in-seconds: 10
   client:
     registerWithEureka: false
     fetchRegistry: false
@@ -37,3 +41,6 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   server:
     enable-self-preservation: false
+feign:
+  hystrix:
+    enabled: true

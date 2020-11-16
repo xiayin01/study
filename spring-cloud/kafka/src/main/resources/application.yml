@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: kafka-test
+  kafka:
+    bootstrap-servers: localhost:9093,localhost:9094
+    producer:
+      value-serializer: com.xy.serializer.ObjectSerializer
+    consumer:
+      value-deserializer: com.xy.deserializer.ObjectDeserializer
+      group-id: xy-test
+server:
+  port: 8080
