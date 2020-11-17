@@ -13,6 +13,7 @@
         <module>user</module>
         <module>nacos-config</module>
         <module>kafka</module>
+        <module>validator</module>
     </modules>
 
     <parent>
