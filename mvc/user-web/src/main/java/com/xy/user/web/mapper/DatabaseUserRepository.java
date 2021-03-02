@@ -2,6 +2,7 @@ package com.xy.user.web.mapper;
 
 import com.xy.user.web.domain.User;
 import com.xy.user.web.function.ThrowableFunction;
+import com.xy.user.web.jndi.JndiConnectionManager;
 import com.xy.user.web.sql.DBConnectionManager;
 
 import java.beans.BeanInfo;
@@ -22,14 +23,20 @@ public class DatabaseUserRepository implements UserMapper {
 
     private static Logger logger = Logger.getLogger(DatabaseUserRepository.class.getName());
 
-    private final DBConnectionManager dbConnectionManager;
+    private final DBConnectionManager connectionManager;
 
     public DatabaseUserRepository(DBConnectionManager dbConnectionManager) {
-        this.dbConnectionManager = dbConnectionManager;
+        this.connectionManager = dbConnectionManager;
     }
 
+    /*private final JndiConnectionManager connectionManager;
+
+    public DatabaseUserRepository(JndiConnectionManager jndiConnectionManager) {
+        this.connectionManager = jndiConnectionManager;
+    }*/
+
     private Connection getConnection() {
-        return dbConnectionManager.getConnection();
+        return connectionManager.getConnection();
     }
 
     /**
@@ -68,8 +75,8 @@ public class DatabaseUserRepository implements UserMapper {
     public User getByEmailAndPassword(String email, String password) {
         return executeQuery("SELECT id,name,password,email,phoneNumber FROM users WHERE email=? and password=?",
                 resultSet -> {
-                    User user=new User();
-                    while (resultSet.next()){
+                    User user = new User();
+                    while (resultSet.next()) {
                         user.setId(resultSet.getLong(1));
                         user.setName(resultSet.getString(2));
                         user.setPassword(resultSet.getString(3));
@@ -134,7 +141,7 @@ public class DatabaseUserRepository implements UserMapper {
 
                 // Boolean -> boolean
                 String methodName = preparedStatementMethodMappings.get(argType);
-                Method method = PreparedStatement.class.getMethod(methodName,int.class,  wrapperType);
+                Method method = PreparedStatement.class.getMethod(methodName, int.class, wrapperType);
                 method.invoke(preparedStatement, i + 1, args[i]);
             }
             ResultSet resultSet = preparedStatement.executeQuery();

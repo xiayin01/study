@@ -4,6 +4,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class JndiConnectionManager {
 
@@ -11,19 +12,26 @@ public class JndiConnectionManager {
 
     public JndiConnectionManager() {
         try {
-            Context context = new InitialContext();
-            Object dataSourceRef = context.lookup("java:jdbc/UserPlatformDB");
+            Context ctx = new InitialContext();
+            Context context = (Context) ctx.lookup("java:/comp/env");
+            Object dataSourceRef = context.lookup("jdbc/user-platform");
             DataSource ds = (DataSource) dataSourceRef;
             this.connection = ds.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    public void releaseConnection() {
+        if (this.connection != null) {
             try {
-                if (null != connection) {
-                    connection.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getCause());
             }
         }
     }
