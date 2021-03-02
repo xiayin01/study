@@ -1,3 +1,0 @@
-#auto configuration
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.xy.common.config.RedisConfig
