@@ -80,8 +80,6 @@
     </jsp-config>
 
     <welcome-file-list>
-        <welcome-file>/*</welcome-file>
-        <welcome-file>/user/login</welcome-file>
         <welcome-file>/login-form.jsp</welcome-file>
     </welcome-file-list>
 
