@@ -1,0 +1,188 @@
+package com.xy.user.web.mapper;
+
+import com.xy.user.web.domain.User;
+import com.xy.user.web.function.ThrowableFunction;
+import com.xy.user.web.sql.DBConnectionManager;
+
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.apache.commons.lang.ClassUtils.wrapperToPrimitive;
+
+public class DatabaseUserRepository implements UserMapper {
+
+    private static Logger logger = Logger.getLogger(DatabaseUserRepository.class.getName());
+
+    private final DBConnectionManager dbConnectionManager;
+
+    public DatabaseUserRepository(DBConnectionManager dbConnectionManager) {
+        this.dbConnectionManager = dbConnectionManager;
+    }
+
+    private Connection getConnection() {
+        return dbConnectionManager.getConnection();
+    }
+
+    /**
+     * 通用处理方式
+     */
+    private static Consumer<Throwable> COMMON_EXCEPTION_HANDLER = e -> logger.log(Level.SEVERE, e.getMessage());
+
+    private static final String INSERT_USER_DML_SQL =
+            "INSERT INTO users(name,password,email,phoneNumber) VALUES " +
+                    "(?,?,?,?)";
+
+    public static final String QUERY_ALL_USERS_DML_SQL = "SELECT id,name,password,email,phoneNumber FROM users";
+
+
+    @Override
+    public boolean save(User user) {
+        return executeInsert(resetSet -> null != resetSet && resetSet > 0, COMMON_EXCEPTION_HANDLER, user);
+    }
+
+    @Override
+    public boolean deleteById(Long userId) {
+        return false;
+    }
+
+    @Override
+    public boolean update(User user) {
+        return false;
+    }
+
+    @Override
+    public User getById(Long userId) {
+        return null;
+    }
+
+    @Override
+    public User getByEmailAndPassword(String email, String password) {
+        return executeQuery("SELECT id,name,password,email,phoneNumber FROM users WHERE email=? and password=?",
+                resultSet -> {
+                    User user=new User();
+                    while (resultSet.next()){
+                        user.setId(resultSet.getLong(1));
+                        user.setName(resultSet.getString(2));
+                        user.setPassword(resultSet.getString(3));
+                        user.setEmail(resultSet.getString(4));
+                        user.setPhoneNumber(resultSet.getString(5));
+                    }
+                    return user;
+                }, COMMON_EXCEPTION_HANDLER, email, password);
+    }
+
+    @Override
+    public Collection<User> getAll() {
+        return executeQuery("SELECT id,name,password,email,phoneNumber FROM users", resultSet -> {
+            // BeanInfo -> IntrospectionException
+            BeanInfo userBeanInfo = Introspector.getBeanInfo(User.class, Object.class);
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) { // 如果存在并且游标滚动 // SQLException
+                User user = new User();
+                for (PropertyDescriptor propertyDescriptor : userBeanInfo.getPropertyDescriptors()) {
+                    String fieldName = propertyDescriptor.getName();
+                    Class fieldType = propertyDescriptor.getPropertyType();
+                    String methodName = resultSetMethodMappings.get(fieldType);
+                    // 可能存在映射关系（不过此处是相等的）
+                    String columnLabel = mapColumnLabel(fieldName);
+                    Method resultSetMethod = ResultSet.class.getMethod(methodName, String.class);
+                    // 通过放射调用 getXXX(String) 方法
+                    Object resultValue = resultSetMethod.invoke(resultSet, columnLabel);
+                    // 获取 User 类 Setter方法
+                    // PropertyDescriptor ReadMethod 等于 Getter 方法
+                    // PropertyDescriptor WriteMethod 等于 Setter 方法
+                    Method setterMethodFromUser = propertyDescriptor.getWriteMethod();
+                    // 以 id 为例，  user.setId(resultSet.getLong("id"));
+                    setterMethodFromUser.invoke(user, resultValue);
+                }
+            }
+            return users;
+        }, e -> {
+            // 异常处理
+        });
+    }
+
+    /**
+     * @param sql
+     * @param function
+     * @param <T>
+     * @return
+     */
+    protected <T> T executeQuery(String sql, ThrowableFunction<ResultSet, T> function,
+                                 Consumer<Throwable> exceptionHandler, Object... args) {
+        Connection connection = getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                Object arg = args[i];
+                Class argType = arg.getClass();
+
+                Class wrapperType = wrapperToPrimitive(argType);
+
+                if (wrapperType == null) {
+                    wrapperType = argType;
+                }
+
+                // Boolean -> boolean
+                String methodName = preparedStatementMethodMappings.get(argType);
+                Method method = PreparedStatement.class.getMethod(methodName,int.class,  wrapperType);
+                method.invoke(preparedStatement, i + 1, args[i]);
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // 返回一个 POJO List -> ResultSet -> POJO List
+            // ResultSet -> T
+            return function.apply(resultSet);
+        } catch (Throwable e) {
+            exceptionHandler.accept(e);
+        }
+        return null;
+    }
+
+    protected <T> T executeInsert(ThrowableFunction<Integer, T> function,
+                                  Consumer<Throwable> exceptionHandler, User user) {
+        Connection connection = getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(DatabaseUserRepository.INSERT_USER_DML_SQL);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getPhoneNumber());
+            int resultSet = preparedStatement.executeUpdate();
+            return function.apply(resultSet);
+        } catch (Throwable e) {
+            exceptionHandler.accept(e);
+        }
+        return null;
+    }
+
+
+    private static String mapColumnLabel(String fieldName) {
+        return fieldName;
+    }
+
+    /**
+     * 数据类型与 ResultSet 方法名映射
+     */
+    static Map<Class, String> resultSetMethodMappings = new HashMap<>();
+
+    static Map<Class, String> preparedStatementMethodMappings = new HashMap<>();
+
+    static {
+        resultSetMethodMappings.put(Long.class, "getLong");
+        resultSetMethodMappings.put(String.class, "getString");
+
+        preparedStatementMethodMappings.put(Long.class, "setLong"); // long
+        preparedStatementMethodMappings.put(String.class, "setString"); //
+
+
+    }
+}
