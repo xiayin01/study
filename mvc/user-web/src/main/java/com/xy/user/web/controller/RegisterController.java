@@ -41,9 +41,9 @@ public class RegisterController implements RestController {
     @GET
     @Path("query")
     public String query(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        String userName = request.getParameter("name");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-        User user = new UserServiceImpl().queryUserByEmailAndPassword(userName, password);
+        User user = new UserServiceImpl().queryUserByEmailAndPassword(email, password);
         request.setAttribute("name", user.getName());
         return "hello.jsp";
     }
