@@ -1,9 +1,9 @@
 package com.xy.user.web.mapper;
 
+import com.xy.user.web.context.ComponentContext;
+import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
 import com.xy.user.web.function.ThrowableFunction;
-import com.xy.user.web.jndi.JndiConnectionManager;
-import com.xy.user.web.sql.DBConnectionManager;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -25,15 +25,9 @@ public class DatabaseUserRepository implements UserMapper {
 
     private final DBConnectionManager connectionManager;
 
-    public DatabaseUserRepository(DBConnectionManager dbConnectionManager) {
-        this.connectionManager = dbConnectionManager;
+    public DatabaseUserRepository() {
+        this.connectionManager = ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
     }
-
-    /*private final JndiConnectionManager connectionManager;
-
-    public DatabaseUserRepository(JndiConnectionManager jndiConnectionManager) {
-        this.connectionManager = jndiConnectionManager;
-    }*/
 
     private Connection getConnection() {
         return connectionManager.getConnection();
