@@ -18,11 +18,9 @@ import java.sql.SQLException;
  */
 public class ComponentInitializerListener implements ServletContextListener {
 
-    private ServletContext servletContext;
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        this.servletContext = sce.getServletContext();
+        ServletContext servletContext = sce.getServletContext();
         ComponentContext context = new ComponentContext();
         context.init(servletContext);
     }
