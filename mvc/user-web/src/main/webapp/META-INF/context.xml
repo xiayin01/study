@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context><!-- 上下文资源/组件声明（类似于spring上下文） -->
+<Context>
+    <!-- 上下文资源/组件声明（类似于spring上下文） -->
     <!-- Apache Commons Digester (Read-Only) 表达式（规则） -->
     <!-- Apache Commons DataSource Connection Pool(DBCP) 1.x -->
     <!--
