@@ -23,16 +23,6 @@ public class DatabaseUserRepository implements UserMapper {
 
     private static Logger logger = Logger.getLogger(DatabaseUserRepository.class.getName());
 
-    private final DBConnectionManager connectionManager;
-
-    public DatabaseUserRepository() {
-        this.connectionManager = ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
-    }
-
-    private Connection getConnection() {
-        return connectionManager.getConnection();
-    }
-
     /**
      * 通用处理方式
      */
@@ -44,6 +34,15 @@ public class DatabaseUserRepository implements UserMapper {
 
     public static final String QUERY_ALL_USERS_DML_SQL = "SELECT id,name,password,email,phoneNumber FROM users";
 
+    private final DBConnectionManager dbConnectionManager;
+
+    public DatabaseUserRepository() {
+        this.dbConnectionManager = ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
+    }
+
+    private Connection getConnection() {
+        return dbConnectionManager.getConnection();
+    }
 
     @Override
     public boolean save(User user) {
