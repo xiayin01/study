@@ -41,4 +41,7 @@
               type="com.xy.user.web.service.impl.UserServiceImpl"
               factory="org.apache.naming.factory.BeanFactory"/>
 
+    <Resource name="bean/Validator" auth="Container"
+              type="com.xy.user.web.validator.DelegatingValidator"
+              factory="org.apache.naming.factory.BeanFactory"/>
 </Context>

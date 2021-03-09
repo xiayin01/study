@@ -1,5 +1,6 @@
 package com.xy.user.web.service;
 
+import com.xy.common.mvc.ResponseResult;
 import com.xy.user.web.domain.User;
 
 /**
@@ -13,7 +14,7 @@ public interface UserService {
      * @param user 用户对象
      * @return 成功返回<code>true</code>
      */
-    boolean register(User user);
+    ResponseResult register(User user);
 
     /**
      * 注销用户

@@ -1,10 +1,14 @@
 package com.xy.user.web.controller;
 
+import com.xy.common.mvc.ResponseResult;
 import com.xy.common.mvc.controller.RestController;
+import com.xy.common.mvc.enums.ResponseStatus;
+import com.xy.user.web.context.ComponentContext;
 import com.xy.user.web.domain.User;
 import com.xy.user.web.service.impl.UserServiceImpl;
 import org.apache.commons.lang.StringUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -13,6 +17,12 @@ import javax.ws.rs.Path;
 
 @Path("user")
 public class RegisterController implements RestController {
+
+    private final UserServiceImpl userService;
+
+    public RegisterController() {
+        this.userService = ComponentContext.getInstance().getComponent("bean/UserService");
+    }
 
     @Override
     @POST
@@ -27,12 +37,14 @@ public class RegisterController implements RestController {
         u.setEmail(email);
         u.setName(userName);
         u.setPassword(password);
-        boolean result = new UserServiceImpl().deregister(u);
-        if (result) {
+
+        ResponseResult result = userService.register(u);
+
+        if (result.getStatus() == ResponseStatus.SUCCESS.getStatus()) {
             request.setAttribute("name", userName);
             return "hello.jsp";
         } else {
-            request.setAttribute("error", "注册失败");
+            request.setAttribute("error", result.getMsg());
             return "error.jsp";
         }
     }

@@ -1,6 +1,11 @@
 package com.xy.user.web.domain;
 
+import com.xy.user.web.validator.LoginValidator;
+import com.xy.user.web.validator.RegisterValidator;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,14 +22,20 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Min(value = 1, message = "id最小为1")
     private Long id;
     @Column
+    @NotBlank(groups = {RegisterValidator.class, LoginValidator.class})
     private String name;
     @Column
+    @Length(min = 6, max = 32, message = "密码长度6-32位")
     private String password;
     @Column
+    @Email
     private String email;
     @Column
+    @Pattern(regexp = "((\\d{11})$)", message = "电话号码格式不对")
+    //@Length(min = 11,max =11)
     private String phoneNumber;
 
     public Long getId() {

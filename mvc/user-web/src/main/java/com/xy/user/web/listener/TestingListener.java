@@ -23,7 +23,7 @@ public class TestingListener implements ServletContextListener {
         ComponentContext context = ComponentContext.getInstance();
         DBConnectionManager dbConnectionManager = context.getComponent("bean/DBConnectionManager");
         dbConnectionManager.getConnection();
-        testUser(dbConnectionManager.getEntityManager());
+        //testUser(dbConnectionManager.getEntityManager());
         logger.info("所有的 JNDI 组件名称：[");
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
@@ -32,9 +32,9 @@ public class TestingListener implements ServletContextListener {
     private void testUser(EntityManager entityManager) {
         User user = new User();
         user.setName("test");
-        user.setPassword("123");
+        user.setPassword("123456");
         user.setEmail("123@gmail.com");
-        user.setPhoneNumber("123");
+        user.setPhoneNumber("18611111111");
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         entityManager.persist(user);
