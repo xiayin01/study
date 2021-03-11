@@ -55,7 +55,7 @@ public class RegisterController implements RestController {
     public String query(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        User user = new UserServiceImpl().queryUserByEmailAndPassword(email, password);
+        User user = userService.queryUserByEmailAndPassword(email, password);
         request.setAttribute("name", user.getName());
         return "hello.jsp";
     }
@@ -66,8 +66,8 @@ public class RegisterController implements RestController {
     public String login(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        User user = new UserServiceImpl().queryUserByEmailAndPassword(email, password);
-        if (StringUtils.isNotBlank(user.getName())) {
+        User user = userService.queryUserByEmailAndPassword(email, password);
+        if (user != null && StringUtils.isNotBlank(user.getName())) {
             request.setAttribute("name", user.getName());
             return "hello.jsp";
         } else {
