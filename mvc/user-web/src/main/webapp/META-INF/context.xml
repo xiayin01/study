@@ -22,6 +22,15 @@
               driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
               url="jdbc:derby:db/user-platform;create=true"/>
 
+    <!-- 用 Java -jar 运行时方式-->
+    <!--<Resource name="jdbc/UserPlatform"
+              type="javax.sql.DataSource" auth="Container"
+              description="Derby database for User Platform"
+              maxActive="100" maxIdle="30" maxWait="10000"
+              username="" password=""
+              driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+              url="jdbc:derby:/db/user-platform;create=true"/>-->
+
     <!-- FactoryBean -->
     <Resource name="bean/DBConnectionManager" auth="Container"
               type="com.xy.user.web.db.DBConnectionManager"
