@@ -1,6 +1,6 @@
 package com.xy.user.web.listener;
 
-import com.xy.user.web.context.ComponentContext;
+import com.xy.common.mvc.context.ComponentContext;
 import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
 

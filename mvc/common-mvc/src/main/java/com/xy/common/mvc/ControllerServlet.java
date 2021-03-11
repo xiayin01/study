@@ -1,5 +1,6 @@
 package com.xy.common.mvc;
 
+import com.xy.common.mvc.context.ComponentContext;
 import com.xy.common.mvc.controller.Controller;
 import com.xy.common.mvc.controller.RestController;
 import com.xy.common.mvc.header.HandlerMethodInfo;
@@ -17,7 +18,10 @@ import javax.ws.rs.Path;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.substringAfter;
@@ -38,30 +42,29 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void initHandleMethods() {
-        for (Controller controller : ServiceLoader.load(Controller.class)) {
-            Class<? extends Controller> controllerClass = controller.getClass();
-            //找到类上的路径
-            Path pathFromClass = controllerClass.getAnnotation(Path.class);
-            String requestMainPath = pathFromClass.value();
-            if (!requestMainPath.startsWith("/")) {
-                requestMainPath = "/" + requestMainPath;
-            }
-            Method[] publicMethods = controllerClass.getMethods();
-            for (Method publicMethod : publicMethods) {
-                Set<String> supportedHttpMethods = findSupportedHttpMethods(publicMethod);
-                //找到方法上的路径
-                Path pathFromMethod = publicMethod.getAnnotation(Path.class);
-                if (null != pathFromMethod) {
-                    String requestBodyPath = "";
-                    if (!pathFromMethod.value().startsWith("/")) {
-                        requestBodyPath += "/" + pathFromMethod.value();
-                    } else {
-                        requestBodyPath += pathFromMethod.value();
-                    }
-                    handleMethodInfoMapping.put(requestMainPath + requestBodyPath,
-                            new HandlerMethodInfo(requestMainPath + requestBodyPath, publicMethod, supportedHttpMethods));
-                    controllersMapping.put(requestMainPath + requestBodyPath, controller);
+        Controller controller = ComponentContext.getInstance().getComponent("bean/Controller");
+        Class<? extends Controller> controllerClass = controller.getClass();
+        //找到类上的路径
+        Path pathFromClass = controllerClass.getAnnotation(Path.class);
+        String requestMainPath = pathFromClass.value();
+        if (!requestMainPath.startsWith("/")) {
+            requestMainPath = "/" + requestMainPath;
+        }
+        Method[] publicMethods = controllerClass.getMethods();
+        for (Method publicMethod : publicMethods) {
+            Set<String> supportedHttpMethods = findSupportedHttpMethods(publicMethod);
+            //找到方法上的路径
+            Path pathFromMethod = publicMethod.getAnnotation(Path.class);
+            if (null != pathFromMethod) {
+                String requestBodyPath = "";
+                if (!pathFromMethod.value().startsWith("/")) {
+                    requestBodyPath += "/" + pathFromMethod.value();
+                } else {
+                    requestBodyPath += pathFromMethod.value();
                 }
+                handleMethodInfoMapping.put(requestMainPath + requestBodyPath,
+                        new HandlerMethodInfo(requestMainPath + requestBodyPath, publicMethod, supportedHttpMethods));
+                controllersMapping.put(requestMainPath + requestBodyPath, controller);
             }
         }
     }
