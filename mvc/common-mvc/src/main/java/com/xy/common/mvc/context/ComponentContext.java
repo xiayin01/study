@@ -1,6 +1,5 @@
 package com.xy.common.mvc.context;
 
-import com.xy.common.mvc.controller.Controller;
 import com.xy.common.mvc.function.ThrowableAction;
 import com.xy.common.mvc.function.ThrowableFunction;
 
