@@ -106,4 +106,9 @@ public class User implements Serializable {
 
     public User() {
     }
+
+    public User(@NotBlank(groups = {RegisterValidator.class}) String name, @Email String email) {
+        this.name = name;
+        this.email = email;
+    }
 }

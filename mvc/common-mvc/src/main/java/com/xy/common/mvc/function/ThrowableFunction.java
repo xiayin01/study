@@ -1,4 +1,4 @@
-package com.xy.user.web.function;
+package com.xy.common.mvc.function;
 
 @FunctionalInterface
 public interface ThrowableFunction<T, R> {

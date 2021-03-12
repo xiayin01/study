@@ -1,9 +1,8 @@
 package com.xy.user.web.orm.jps;
 
-import com.xy.user.web.context.ComponentContext;
+import com.xy.common.mvc.context.ComponentContext;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;

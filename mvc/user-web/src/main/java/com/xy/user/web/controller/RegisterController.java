@@ -3,7 +3,6 @@ package com.xy.user.web.controller;
 import com.xy.common.mvc.ResponseResult;
 import com.xy.common.mvc.controller.RestController;
 import com.xy.common.mvc.enums.ResponseStatus;
-import com.xy.user.web.context.ComponentContext;
 import com.xy.user.web.domain.User;
 import com.xy.user.web.service.impl.UserServiceImpl;
 import org.apache.commons.lang.StringUtils;
@@ -18,11 +17,8 @@ import javax.ws.rs.Path;
 @Path("user")
 public class RegisterController implements RestController {
 
-    private final UserServiceImpl userService;
-
-    public RegisterController() {
-        this.userService = ComponentContext.getInstance().getComponent("bean/UserService");
-    }
+    @Resource(name = "bean/UserService")
+    private UserServiceImpl userService;
 
     @Override
     @POST
@@ -55,7 +51,7 @@ public class RegisterController implements RestController {
     public String query(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        User user = new UserServiceImpl().queryUserByEmailAndPassword(email, password);
+        User user = userService.queryUserByEmailAndPassword(email, password);
         request.setAttribute("name", user.getName());
         return "hello.jsp";
     }
@@ -66,8 +62,8 @@ public class RegisterController implements RestController {
     public String login(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        User user = new UserServiceImpl().queryUserByEmailAndPassword(email, password);
-        if (StringUtils.isNotBlank(user.getName())) {
+        User user = userService.queryUserByEmailAndPassword(email, password);
+        if (user != null && StringUtils.isNotBlank(user.getName())) {
             request.setAttribute("name", user.getName());
             return "hello.jsp";
         } else {

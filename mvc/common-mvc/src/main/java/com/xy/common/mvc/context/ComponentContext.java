@@ -1,7 +1,7 @@
-package com.xy.user.web.context;
+package com.xy.common.mvc.context;
 
-import com.xy.user.web.function.ThrowableAction;
-import com.xy.user.web.function.ThrowableFunction;
+import com.xy.common.mvc.function.ThrowableAction;
+import com.xy.common.mvc.function.ThrowableFunction;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

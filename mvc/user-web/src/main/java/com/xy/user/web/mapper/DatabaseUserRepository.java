@@ -1,9 +1,9 @@
 package com.xy.user.web.mapper;
 
-import com.xy.user.web.context.ComponentContext;
+import com.xy.common.mvc.context.ComponentContext;
 import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
-import com.xy.user.web.function.ThrowableFunction;
+import com.xy.common.mvc.function.ThrowableFunction;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
