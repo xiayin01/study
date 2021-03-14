@@ -6,7 +6,7 @@ public interface StudentJmxMXBean {
 
     Student getStudent();
 
-    Student addStudent();
+    Student setStudent();
 
     void test();
 }

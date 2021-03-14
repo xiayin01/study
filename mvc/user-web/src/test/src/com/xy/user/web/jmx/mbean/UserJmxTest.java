@@ -19,7 +19,7 @@ public class UserJmxTest {
         // 获取平台 MBean Server
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         // 为 UserJmxMBean 定义 ObjectName
-        ObjectName objectName = new ObjectName("user.jmx:type=User");
+        ObjectName objectName = new ObjectName("com.xy.user.web.jmx.mbean:type=UserJmx");
         // 创建 UserMBean 实例
         User user = new User();
         mBeanServer.registerMBean(createUserMBean(user), objectName);

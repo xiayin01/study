@@ -13,7 +13,7 @@ public class StudentJmxMXBeanTest {
         // 获取平台 MXBean Server
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         // 为 StudentJmxMXBean 定义 ObjectName
-        ObjectName objectName = new ObjectName("student.jmx:type=student");
+        ObjectName objectName = new ObjectName("com.xy.user.web.jmx.mxbean:type=StudentJmx");
         // 创建 Student 实例
         Student student = new Student(1L, "test", 12);
         mBeanServer.registerMBean(createStudentMXBean(student), objectName);

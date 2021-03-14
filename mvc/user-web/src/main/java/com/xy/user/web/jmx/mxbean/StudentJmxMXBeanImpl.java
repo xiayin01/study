@@ -16,7 +16,7 @@ public class StudentJmxMXBeanImpl implements StudentJmxMXBean {
     }
 
     @Override
-    public Student addStudent() {
+    public Student setStudent() {
         return this.student;
     }
 
