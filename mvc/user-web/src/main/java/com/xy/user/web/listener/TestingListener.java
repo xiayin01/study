@@ -6,6 +6,7 @@ import com.xy.user.web.domain.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.sql.Connection;
@@ -35,6 +36,8 @@ public class TestingListener implements ServletContextListener {
         ComponentContext context = ComponentContext.getInstance();
         DBConnectionManager dbConnectionManager = context.getComponent("bean/DBConnectionManager");
         dbConnectionManager.getConnection();
+        testProperties(context);
+        testPropertiesFromServletContext(sce.getServletContext());
         try {
             createTable();
         } catch (SQLException e) {
@@ -44,6 +47,16 @@ public class TestingListener implements ServletContextListener {
         logger.info("所有的 JNDI 组件名称：[");
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
+    }
+
+    private void testPropertiesFromServletContext(ServletContext servletContext) {
+        String propertyName = "application.name";
+        logger.info("servlet 读取【" + propertyName + "】 value :" + servletContext.getInitParameter(propertyName));
+    }
+
+    private void testProperties(ComponentContext context) {
+        String propertyName = "application.name";
+        logger.info("JNDI 读取【" + propertyName + "】 value :" + context.lookupComponent(propertyName));
     }
 
     private void testUser(EntityManager entityManager) {

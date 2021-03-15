@@ -57,4 +57,7 @@
     <Resource name="bean/Controller" auth="Container"
               type="com.xy.user.web.controller.RegisterController"
               factory="org.apache.naming.factory.BeanFactory"/>
+
+    <Environment name="application.name" value="user-web"
+                 type="java.lang.String" override="false"/>
 </Context>
