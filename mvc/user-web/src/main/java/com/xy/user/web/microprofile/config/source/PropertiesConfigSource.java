@@ -1,4 +1,4 @@
-package com.xy.user.web.microprofile.config;
+package com.xy.user.web.microprofile.config.source;
 
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
