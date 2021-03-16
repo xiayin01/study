@@ -16,6 +16,7 @@ public class MyConfigSource implements ConfigSource {
     private final Map<String, Object> source;
 
     public MyConfigSource() throws IOException {
+        //-Dapplication.name=test-user-web
         /*Map properties = System.getProperties();
         this.source = new HashMap<>(properties);*/
         //读取配置文件
