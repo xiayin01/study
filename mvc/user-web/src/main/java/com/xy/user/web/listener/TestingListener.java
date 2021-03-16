@@ -50,7 +50,7 @@ public class TestingListener implements ServletContextListener {
         logger.info("]");
         JavaConfig config = new JavaConfig();
         String value = config.getValue("application.name", String.class);
-        System.out.println("-------" + value);
+        System.out.println("----microProfile----" + value);
     }
 
     private void testPropertiesFromServletContext(ServletContext servletContext) {
