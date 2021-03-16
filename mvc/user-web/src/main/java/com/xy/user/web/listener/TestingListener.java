@@ -4,6 +4,9 @@ import com.xy.common.mvc.context.ComponentContext;
 import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
 
+import javax.management.MBeanInfo;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.ServletContextEvent;
@@ -44,6 +47,13 @@ public class TestingListener implements ServletContextListener {
         logger.info("所有的 JNDI 组件名称：[");
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
+        MBeanServer mBeanServer = (MBeanServer) sce.getServletContext().getAttribute("mBeanServer");
+        try {
+            MBeanInfo mBeanInfo = mBeanServer.getMBeanInfo(new ObjectName("com.xy.user.web.jolokia:type=Color"));
+            logger.info("--mBeanInfo---" + mBeanInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void testUser(EntityManager entityManager) {
