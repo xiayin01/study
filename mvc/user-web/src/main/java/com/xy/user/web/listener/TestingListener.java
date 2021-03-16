@@ -5,6 +5,9 @@ import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
 import com.xy.user.web.microprofile.config.JavaConfig;
 
+import javax.management.MBeanInfo;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.ServletContext;
@@ -61,6 +64,13 @@ public class TestingListener implements ServletContextListener {
     private void testProperties(ComponentContext context) {
         String propertyName = "application.name";
         logger.info("JNDI 读取【" + propertyName + "】 value :" + context.lookupComponent(propertyName));
+        MBeanServer mBeanServer = (MBeanServer) sce.getServletContext().getAttribute("mBeanServer");
+        try {
+            MBeanInfo mBeanInfo = mBeanServer.getMBeanInfo(new ObjectName("com.xy.user.web.jolokia:type=Color"));
+            logger.info("--mBeanInfo---" + mBeanInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void testUser(EntityManager entityManager) {
