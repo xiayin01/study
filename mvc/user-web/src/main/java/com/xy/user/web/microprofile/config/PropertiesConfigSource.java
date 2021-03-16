@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-public class MyConfigSource implements ConfigSource {
+public class PropertiesConfigSource implements ConfigSource {
 
     private static final String NAME = "application.name";
 
     private final Map<String, Object> source;
 
-    public MyConfigSource() throws IOException {
+    public PropertiesConfigSource() throws IOException {
         //-Dapplication.name=test-user-web
         /*Map properties = System.getProperties();
         this.source = new HashMap<>(properties);*/
@@ -45,6 +45,6 @@ public class MyConfigSource implements ConfigSource {
 
     @Override
     public String getName() {
-        return "Java System Properties";
+        return NAME;
     }
 }
