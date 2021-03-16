@@ -60,7 +60,7 @@ public class JavaConfig implements Config {
 
     @Override
     public Iterable<ConfigSource> getConfigSources() {
-        return null;
+        return Collections.unmodifiableList(configSources);
     }
 
     @Override

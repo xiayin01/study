@@ -5,7 +5,7 @@ import com.xy.user.web.microprofile.config.JavaConfig;
 public class MicroProfileTest {
 
     public static void main(String[] args) {
-        JavaConfig config=new JavaConfig();
+        System.out.println(System.getProperty("user.home"));
 
     }
 }
