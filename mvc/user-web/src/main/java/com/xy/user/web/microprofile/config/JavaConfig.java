@@ -50,8 +50,8 @@ public class JavaConfig implements Config {
     protected String getPropertyValue(String propertyName) {
         String propertyValue = null;
         for (ConfigSource configSource : configSources) {
-            if (propertyName.equals(configSource.getName())) {
-                propertyValue = configSource.getValue(propertyName);
+            propertyValue = configSource.getValue(propertyName);
+            if (propertyValue != null) {
                 break;
             }
         }

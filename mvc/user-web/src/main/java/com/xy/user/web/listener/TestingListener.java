@@ -4,7 +4,6 @@ import com.xy.common.mvc.context.ComponentContext;
 import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
 import com.xy.user.web.microprofile.config.JavaConfig;
-import com.xy.user.web.microprofile.config.MyConfigSource;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -49,7 +48,9 @@ public class TestingListener implements ServletContextListener {
         logger.info("所有的 JNDI 组件名称：[");
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
-        MyConfigSource javaConfig = new MyConfigSource();
+        JavaConfig config = new JavaConfig();
+        String value = config.getValue("application.name", String.class);
+        System.out.println("-------" + value);
     }
 
     private void testPropertiesFromServletContext(ServletContext servletContext) {
