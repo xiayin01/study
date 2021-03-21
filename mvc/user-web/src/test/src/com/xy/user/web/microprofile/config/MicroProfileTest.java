@@ -1,6 +1,4 @@
-package com.xy.user.web.microprofile;
-
-import com.xy.user.web.microprofile.config.JavaConfig;
+package com.xy.user.web.microprofile.config;
 
 public class MicroProfileTest {
 

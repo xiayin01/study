@@ -1,1 +1,1 @@
-com.xy.user.web.microprofile.config.JavaEEConfigProviderResolver
+com.xy.user.web.microprofile.config.DefaultConfigProviderResolver

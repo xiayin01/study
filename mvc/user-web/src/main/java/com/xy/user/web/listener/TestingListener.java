@@ -3,7 +3,10 @@ package com.xy.user.web.listener;
 import com.xy.common.mvc.context.ComponentContext;
 import com.xy.user.web.db.DBConnectionManager;
 import com.xy.user.web.domain.User;
-import com.xy.user.web.microprofile.config.JavaConfig;
+import com.xy.user.web.microprofile.config.source.DefaultResourceConfigSource;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.spi.ConfigBuilder;
+import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
@@ -56,9 +59,16 @@ public class TestingListener implements ServletContextListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JavaConfig config = new JavaConfig();
-        String value = config.getValue("application.name", String.class);
-        System.out.println("----microProfile----" + value);
+        ConfigProviderResolver configProviderResolver = ConfigProviderResolver.instance();
+        ConfigBuilder configBuilder = configProviderResolver.getBuilder();
+        configBuilder.forClassLoader(sce.getServletContext().getClassLoader());
+        configBuilder.addDefaultSources();
+        configBuilder.addDefaultSources();
+        configBuilder.withSources(new DefaultResourceConfigSource());
+        Config config = configBuilder.build();
+        config.getConfigSources().forEach(configSource -> {
+            System.out.println("----microProfile----" + configSource.getValue("application.name"));
+        });
     }
 
     private void testUser(EntityManager entityManager) {
